@@ -1,18 +1,409 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Lightning Payment App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 2rem;
+        }
+
+        input, button {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        #qrcode {
+            margin-top: 1rem;
+        }
+
+        #invoiceDetails {
+            margin-top: 2rem;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+
+        #invoiceAmount {
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        #invoiceText {
+            display: none;
+            word-wrap: break-word;
+            max-width: 100%;
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        #toggleTextButton {
+            display: none;
+            margin-top: 0.5rem;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Pay with Lightning!</h1>
-    <input type="number" id="amount" placeholder="Amount in sats" />
-    <button id="pay-button">Generate Invoice</button>
-    <div id="qrcode"></div>
+    <h1>⚡️Pay with Lightning!</h1>
 
-    <script src="app.js"></script>
+    <form id="invoiceForm">
+        <label for="amount">Amount (sats):</label>
+        <input type="number" id="amount" name="amount" required min="1">
+        <button type="submit">Create Invoice</button>
+    </form> -->
+
+    <!-- QR Code will render here -->
+    <!-- <div id="qrcode"></div> -->
+
+    <!-- Invoice Details Section -->
+    <!-- <div id="invoiceDetails" style="display: none;">
+        <div id="invoiceAmount"></div>
+        <pre id="invoiceText" style="display: none; word-wrap: break-word; max-width: 100%; text-align: left; margin-top: 1rem;"></pre>
+        <button id="toggleTextButton" style="display: none; margin-top: 0.5rem;">Show Raw Invoice</button>
+    </div> -->
+
+    <!-- Copy Invoice Button -->
+    <!-- <button onclick="copyInvoice()">Copy Invoice</button> -->
+
+    <!-- ✅ Socket.IO client from local server -->
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+
+    <!-- ✅ QR Code library -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> -->
+
+    <!-- <script>
+        const form = document.getElementById('invoiceForm');
+        const qrContainer = document.getElementById('qrcode');
+        const invoiceDetails = document.getElementById('invoiceDetails');
+        const invoiceAmountEl = document.getElementById('invoiceAmount');
+        const invoiceText = document.getElementById('invoiceText');
+        const toggleButton = document.getElementById('toggleTextButton');
+        let currentPaymentRequest = '';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amount = document.getElementById('amount').value;
+
+            qrContainer.innerHTML = ''; // Clear previous QR
+            invoiceDetails.style.display = 'none';
+            invoiceText.style.display = 'none';
+            toggleButton.style.display = 'none';
+
+            const res = await fetch('/create-invoice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount })
+            });
+
+            const data = await res.json();
+            currentPaymentRequest = data.payment_request; -->
+
+            <!-- // Show invoice details section -->
+            <!-- invoiceDetails.style.display = 'block';
+            invoiceAmountEl.textContent = `💰 Invoice Amount: ${amount} sats`; -->
+
+            <!-- // Generate QR Code -->
+            <!-- new QRCode(qrContainer, {
+                text: currentPaymentRequest,
+                width: 256,
+                height: 256
+            }); -->
+
+            <!-- // Show the raw invoice text toggle
+            invoiceText.textContent = currentPaymentRequest;
+            toggleButton.textContent = 'Show Raw Invoice';
+            toggleButton.style.display = 'inline-block';
+            invoiceText.style.display = 'none';
+        }); -->
+
+        <!-- toggleButton.addEventListener('click', () => {
+            const isVisible = invoiceText.style.display === 'block';
+            invoiceText.style.display = isVisible ? 'none' : 'block';
+            toggleButton.textContent = isVisible ? 'Show Raw Invoice' : 'Hide Raw Invoice';
+        });
+
+        // ✅ Connect to Socket.IO from your server
+        const socket = io();
+
+        // ✅ Listen for invoice payment events
+        socket.on('invoicePaid', (invoice) => {
+            alert('🎉 Payment received for invoice: ' + invoice.memo);
+        });
+
+        function copyInvoice() {
+            if (!currentPaymentRequest) return alert("No invoice to copy!");
+            navigator.clipboard.writeText(currentPaymentRequest)
+                .then(() => alert("Invoice copied!"))
+                .catch(err => alert("Copy failed: " + err));
+        } -->
+    <!-- </script>
 </body>
+</html> -->
 
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lightning Payment App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 2rem;
+        }
+
+        input, button {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        #qrcode {
+            margin-top: 1rem;
+        }
+
+        #invoiceDetails {
+            margin-top: 2rem;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+
+        #invoiceAmount {
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        #invoiceText {
+            display: none;
+            word-wrap: break-word;
+            max-width: 100%;
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        #toggleTextButton {
+            display: none;
+            margin-top: 0.5rem;
+        }
+
+        /* Optional styling for the PAID status */
+        .paidStatus {
+            color: green;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>⚡️Pay with Lightning!</h1>
+
+    <form id="invoiceForm">
+        <label for="amount">Amount (sats):</label>
+        <input type="number" id="amount" name="amount" required min="1">
+        <button type="submit">Create Invoice</button>
+    </form> -->
+
+    <!-- QR Code will render here -->
+    <!-- <div id="qrcode"></div> -->
+
+    <!-- Invoice Details Section -->
+    <!-- <div id="invoiceDetails" style="display: none;">
+        <div id="invoiceAmount"></div>
+        <pre id="invoiceText" style="display: none; word-wrap: break-word; max-width: 100%; text-align: left; margin-top: 1rem;"></pre>
+        <button id="toggleTextButton" style="display: none; margin-top: 0.5rem;">Show Raw Invoice</button>
+    </div> -->
+
+    <!-- Copy Invoice Button -->
+    <!-- <button onclick="copyInvoice()">Copy Invoice</button> -->
+
+    <!-- ✅ Socket.IO client from local server -->
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+
+    <!-- ✅ QR Code library -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> -->
+
+    <!-- <script>
+        const form = document.getElementById('invoiceForm');
+        const qrContainer = document.getElementById('qrcode');
+        const invoiceDetails = document.getElementById('invoiceDetails');
+        const invoiceAmountEl = document.getElementById('invoiceAmount');
+        const invoiceText = document.getElementById('invoiceText');
+        const toggleButton = document.getElementById('toggleTextButton');
+        let currentPaymentRequest = '';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amount = document.getElementById('amount').value;
+
+            qrContainer.innerHTML = ''; // Clear previous QR
+            invoiceDetails.style.display = 'none';
+            invoiceText.style.display = 'none';
+            toggleButton.style.display = 'none';
+
+            const res = await fetch('/create-invoice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount })
+            });
+
+            const data = await res.json();
+            currentPaymentRequest = data.payment_request; -->
+
+            <!-- // Show invoice details section
+            invoiceDetails.style.display = 'block';
+            invoiceAmountEl.textContent = `💰 Invoice Amount: ${amount} sats`;
+
+            // Generate QR Code
+            new QRCode(qrContainer, {
+                text: currentPaymentRequest,
+                width: 256,
+                height: 256
+            });
+
+            // Show the raw invoice text toggle
+            invoiceText.textContent = currentPaymentRequest;
+            toggleButton.textContent = 'Show Raw Invoice';
+            toggleButton.style.display = 'inline-block';
+            invoiceText.style.display = 'none';
+        });
+
+        toggleButton.addEventListener('click', () => {
+            const isVisible = invoiceText.style.display === 'block';
+            invoiceText.style.display = isVisible ? 'none' : 'block';
+            toggleButton.textContent = isVisible ? 'Show Raw Invoice' : 'Hide Raw Invoice';
+        });
+
+        // ✅ Connect to Socket.IO from your server
+        const socket = io();
+
+        // ✅ Listen for invoice payment events
+        socket.on('invoicePaid', (invoice) => {
+            // Display the "Paid" status visually in the UI
+            const paidMessage = '✅ PAID!';
+            invoiceAmountEl.textContent += ` ${paidMessage}`;
+            invoiceAmountEl.classList.add('paidStatus'); // Apply styling
+
+            // Optionally, hide the raw invoice text or other UI updates if needed
+            invoiceText.style.display = 'none';
+        });
+
+        function copyInvoice() {
+            if (!currentPaymentRequest) return alert("No invoice to copy!");
+            navigator.clipboard.writeText(currentPaymentRequest)
+                .then(() => alert("Invoice copied!"))
+                .catch(err => alert("Copy failed: " + err));
+        } -->
+    <!-- </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lightning Payment App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 2rem;
+      text-align: center;
+    }
+    form {
+      margin-bottom: 2rem;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin: 0.5rem;
+    }
+    #qrcode {
+      margin-top: 1rem;
+    }
+    #invoiceDetails {
+      margin-top: 2rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+    #invoiceAmount {
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+    #invoiceText {
+      display: none;
+      word-wrap: break-word;
+      max-width: 100%;
+      text-align: left;
+      margin-top: 1rem;
+    }
+    #toggleTextButton {
+      display: none;
+      margin-top: 0.5rem;
+    }
+    .paidStatus {
+      color: green;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    #usdAmount {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    #timer {
+      margin-top: 0.5rem;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡️Pay with Lightning!</h1>
+
+  <form id="invoiceForm">
+    <label for="amount">Amount (sats):</label>
+    <input type="number" id="amount" name="amount" required min="1">
+    <button type="submit">Create Invoice</button>
+  </form>
+
+  <div id="qrcode"></div>
+
+  <div id="invoiceDetails" style="display: none;">
+    <div id="invoiceAmount"></div>
+    <div id="usdAmount"></div>
+    <div id="timer"></div>
+    <pre id="invoiceText"></pre>
+    <button id="toggleTextButton">Show Raw Invoice</button>
+  </div>
+
+  <button onclick="copyInvoice()">Copy Invoice</button>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="app.js"></script>
+</body>
 </html>
