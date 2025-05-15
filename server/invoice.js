@@ -16,12 +16,28 @@ async function createInvoice(amountSats) {
     });
 }
 
-// Subscribe to Invoices
-function subscribeToInvoices() {
+// function subscribeToInvoices(io) {
+//     const call = lnd.SubscribeInvoices({});
+//     call.on('data', (invoice) => {
+//         if (invoice.settled) {
+//             console.log(`Invoice settled! ${invoice.memo}`);
+//             if (io) {
+//                 io.emit('invoicePaid', invoice);
+//             }
+//         }
+//     });
+
+//     call.on('error', console.error);
+// }
+
+function subscribeToInvoices(io) {
     const call = lnd.SubscribeInvoices({});
     call.on('data', (invoice) => {
         if (invoice.settled) {
             console.log(`Invoice settled! ${invoice.memo}`);
+            if (io) {
+                io.emit('invoicePaid', invoice); // emit to all clients
+            }
         }
     });
     call.on('error', console.error);
